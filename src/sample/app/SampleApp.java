@@ -48,7 +48,7 @@ public class SampleApp {
 	}
 	
 	
-	public JsonArray get_capacitor_mrids(String modelMrid) throws SystemException, JMSException{
+	public JsonArray getCapacitorMrid(String modelMrid) throws SystemException, JMSException{
 		
 		String request = "{\"requestType\": \"QUERY_OBJECT_IDS\","+
 					"\"modelId\": \""+modelMrid+"\","+
@@ -65,6 +65,40 @@ public class SampleApp {
 	
 	}
 	
+	public JsonArray getPVObjetcDict(String modelMrid) throws SystemException, JMSException{
+		
+		String request = "{\"requestType\": \"QUERY_OBJECT_DICT\","+
+					"\"modelId\": \""+modelMrid+"\","+
+					"\"resultFormat\": \"JSON\","+
+					"\"objectType\": \"PowerElectronicsCollection\"}";
+		
+		String topic = "goss.gridappsd.process.request.data.powergridmodel";
+		 
+		String response = client.getResponse(request, topic, RESPONSE_FORMAT.JSON).toString();
+		
+		JsonParser parser = new JsonParser();
+		JsonObject json = (JsonObject) parser.parse(response);
+		return json.getAsJsonObject("data").getAsJsonArray();
+	
+	}
+	
+	public JsonArray getPVObjetcMeasurements(String modelMrid) throws SystemException, JMSException{
+		
+		String request = "{\"requestType\": \"QUERY_OBJECT_MESUREMENTS\","+
+					"\"modelId\": \""+modelMrid+"\","+
+					"\"resultFormat\": \"JSON\","+
+					"\"objectType\": \"PowerElectronicsCollection\"}";
+		
+		String topic = "goss.gridappsd.process.request.data.powergridmodel";
+		 
+		String response = client.getResponse(request, topic, RESPONSE_FORMAT.JSON).toString();
+		
+		JsonParser parser = new JsonParser();
+		JsonObject json = (JsonObject) parser.parse(response);
+		return json.getAsJsonObject("data").getAsJsonArray();
+	
+	}
+	
 	
 	public static void main(String[] args){
 		
@@ -78,9 +112,13 @@ public class SampleApp {
 			
 			SampleApp sampleApp = new SampleApp();
 			
-			JsonArray capacitors = sampleApp.get_capacitor_mrids(modelMrid);
+			JsonArray pv_object = sampleApp.getPVObjetcDict(modelMrid);
+			System.out.println(pv_object);
+			JsonArray pv_measurements = sampleApp.getPVObjetcMeasurements(modelMrid);
+			System.out.println(pv_measurements);
 			
-			sampleApp.client.subscribe(simulationOutputTopic, new ResponseEvent(capacitors, sampleApp.client, simulationId));
+			
+			//sampleApp.client.subscribe(simulationOutputTopic, new ResponseEvent(capacitors, sampleApp.client, simulationId));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
