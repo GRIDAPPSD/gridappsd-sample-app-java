@@ -70,7 +70,7 @@ public class SampleApp {
 		String request = "{\"requestType\": \"QUERY_OBJECT_DICT\","+
 					"\"modelId\": \""+modelMrid+"\","+
 					"\"resultFormat\": \"JSON\","+
-					"\"objectType\": \"PowerElectronicsCollection\"}";
+					"\"objectType\": \"PowerElectronicsConnection\"}";
 		
 		String topic = "goss.gridappsd.process.request.data.powergridmodel";
 		 
@@ -78,16 +78,16 @@ public class SampleApp {
 		
 		JsonParser parser = new JsonParser();
 		JsonObject json = (JsonObject) parser.parse(response);
-		return json.getAsJsonObject("data").getAsJsonArray();
+		return json.getAsJsonArray("data");
 	
 	}
 	
 	public JsonArray getPVObjetcMeasurements(String modelMrid) throws SystemException, JMSException{
 		
-		String request = "{\"requestType\": \"QUERY_OBJECT_MESUREMENTS\","+
+		String request = "{\"requestType\": \"QUERY_OBJECT_MEASUREMENTS\","+
 					"\"modelId\": \""+modelMrid+"\","+
 					"\"resultFormat\": \"JSON\","+
-					"\"objectType\": \"PowerElectronicsCollection\"}";
+					"\"objectType\": \"PowerElectronicsConnection\"}";
 		
 		String topic = "goss.gridappsd.process.request.data.powergridmodel";
 		 
@@ -95,7 +95,7 @@ public class SampleApp {
 		
 		JsonParser parser = new JsonParser();
 		JsonObject json = (JsonObject) parser.parse(response);
-		return json.getAsJsonObject("data").getAsJsonArray();
+		return json.getAsJsonArray("data");
 	
 	}
 	
